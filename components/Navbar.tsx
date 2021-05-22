@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <div className="border-b-2">
       <div className="flex justify-between m-4">
-        <Link href="/">
+        <Link href={`${auth ? "/" : "/login"}`}>
           <Image
             src="/logo.svg"
             width={25}
@@ -24,12 +24,12 @@ export default function Navbar() {
           />
         </Link>
         {auth ? (
-          <a onClick={signOut}>Logout</a>
+          <a className="cursor-pointer" onClick={signOut}>
+            Logout
+          </a>
         ) : (
           <Link href="/login">
-            <a className={`${router.pathname === "/signin" && "font-bold"}`}>
-              Login
-            </a>
+            <a>Login</a>
           </Link>
         )}
       </div>
