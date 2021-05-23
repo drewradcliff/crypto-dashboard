@@ -6,6 +6,12 @@ module.exports = {
       height: {
         "within-screen": "calc(100vh - 74px)",
       },
+      maxWidth: {
+        1048: "1048px",
+      },
+      boxShadow: {
+        border: "inset 0 -1px #eaeaea;",
+      },
     },
   },
   variants: {
