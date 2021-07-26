@@ -19,12 +19,14 @@ export default function Navbar() {
     <div className="shadow-border">
       <div className="flex justify-between max-w-1048 mx-auto py-4">
         <Link href={auth ? "/" : "/login"}>
-          <Image
-            src="/logo.svg"
-            width={25}
-            height={25}
-            className="cursor-pointer"
-          />
+          <a>
+            <Image
+              src="/logo.svg"
+              width={25}
+              height={25}
+              className="cursor-pointer"
+            />
+          </a>
         </Link>
         {auth ? (
           <UserDropdown />

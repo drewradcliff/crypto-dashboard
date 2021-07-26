@@ -4,15 +4,15 @@ import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "../lib/auth";
 
 export default function UserDropdown() {
-  const { signOut } = useAuth();
+  const { auth, signOut } = useAuth();
   const router = useRouter();
 
   return (
-    <div className="w-56 text-right top-16">
+    <div className="w-8 h-8">
       <Menu as="div" className="relative inline-block text-left">
-        <div>
-          <Menu.Button className="w-full px-4 py-4 bg-gradient-to-r from-green-400 to-blue-500 rounded-full focus:outline-none"></Menu.Button>
-        </div>
+        <Menu.Button className="focus:outline-none w-full h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full">
+          <img className="rounded-full" src={auth?.photoUrl || ""} />
+        </Menu.Button>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"

@@ -2,8 +2,26 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import AssetCard from "../components/AssetCard";
 import { useAuth } from "../lib/auth";
+import { GetStaticProps } from "next";
+import axios from "axios";
+import { Coin } from "../types/coin";
 
-export default function Home() {
+interface Props {
+  data: {
+    data: Coin[];
+    status: {
+      credit_count: number;
+      elapsed: number;
+      error_code: number;
+      error_message: string | null;
+      notice: string | null;
+      timestamp: string;
+      total_count: number;
+    };
+  };
+}
+
+export default function Home({ data }: Props) {
   const { auth } = useAuth();
 
   return (
@@ -14,21 +32,33 @@ export default function Home() {
       </Head>
       <main>
         <Navbar />
-        <div className="flex justify-between max-w-1048 mx-auto py-12">
-          <h1 className="text-6xl max-w-1048">
-            Hello, {auth?.name.split(" ")[0]}
+        <div className="max-w-1048 mx-auto py-12">
+          <h1 className="text-6xl max-w-1048 mb-12">
+            Hello {auth?.name ? auth.name.split(" ")[0] : " 👋"}
           </h1>
-          <button className="bg-black text-white rounded-md px-8 hover:bg-white hover:text-black border border-black h-10">
-            Buy / Sell
-          </button>
-        </div>
-        <div className="flex max-w-1048 mx-auto space-x-4">
-          <AssetCard />
-          <AssetCard />
-          <AssetCard />
+          <div className="space-y-4">
+            {data.data.map((coin) => (
+              <AssetCard key={coin.id} coin={coin} />
+            ))}
+          </div>
         </div>
       </main>
-      <footer></footer>
     </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await axios.get(
+    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=10&convert=USD",
+    {
+      headers: {
+        Accept: "application / json",
+        "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY,
+      },
+    }
+  );
+
+  return {
+    props: { data },
+  };
+};
